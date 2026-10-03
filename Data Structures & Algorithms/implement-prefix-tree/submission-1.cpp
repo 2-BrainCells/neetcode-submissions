@@ -1,0 +1,52 @@
+class Node {
+   public:
+    Node* links[26];
+    bool flag;
+    Node() {
+        flag = false;
+        for (int i = 0; i < 26; i++) {
+            links[i] = nullptr;
+        }
+    }
+};
+class PrefixTree {
+    Node* root;
+
+   public:
+    PrefixTree() { root = new Node(); }
+
+    void insert(string word) {
+        Node* node = root;
+        for (char c : word) {
+            int index = c - 'a';
+            if (node->links[index] == nullptr) node->links[index] = new Node();
+
+            node = node->links[index];
+        }
+        node->flag = true;
+    }
+
+    bool search(string word) {
+        Node* node = root;
+        for (char c : word) {
+            int index = c - 'a';
+
+            if (node->links[index] == nullptr) return false;
+
+            node = node->links[index];
+        }
+        return node->flag;
+    }
+
+    bool startsWith(string prefix) {
+        Node* node = root;
+
+        for (char c : prefix) {
+            int index = c - 'a';
+
+            if (node->links[index] == nullptr) return false;
+            node = node->links[index];
+        }
+        return true;
+    }
+};
